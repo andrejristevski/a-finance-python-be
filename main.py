@@ -28,10 +28,6 @@ def index () :
     startDate = request.args.get('startDate')
     endDate = request.args.get('endDate')
 
-    print startDate
-    print endDate
-    print 'shit sun'
-
     d1= datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
     d2= datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
     res = service.getRatesBetweenDates(d1,d2)
