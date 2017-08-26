@@ -7,7 +7,7 @@ class DbService(object):
     def getLatestDownloadedDate(self):
         return self.repo.getLatestDownloadedDate()
 
-    def getRatesBetweenDates(self , d1, d2):
+    def getRatesBetweenDates(self , d1, d2, inpCur):
         return self.repo.getRatesBetweenDates(d1,d2)
 
     def saveRatesForDate(self, date , rates):

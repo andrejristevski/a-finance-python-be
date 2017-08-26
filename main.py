@@ -6,20 +6,25 @@ import dbService
 import mongoRepo
 from datetime import date, timedelta
 from flask_cors import CORS, cross_origin
+import config
 
+# EUR
+currencies = config.getConfigParameter('currencies')
 
-currencyConfig = {
-            'metadataCollection' : 'metaData',
-            'ratesCollection' : "rates",
-            'dbName' : 'pytdb',
-            'currency': 'EUR'
-        }
+currencyConfig=currencies[0]
 
 repo = mongoRepo.Repo(currencyConfig)
+
 service = dbService.DbService(repo)
 
 app = Flask(__name__)
 CORS(app)
+
+
+def getCurrencyConfig(code):
+    currency = [i for i in currencies if i['currency'] == code]
+    return currency[0]
+
 
 def preparePayLoad(l):
     for el in l:
@@ -40,9 +45,18 @@ def index () :
 
     d1= datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
     d2= datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
-    res = service.getRatesBetweenDates(d1,d2)
+
+    if currencyConfig['currency'] != inpCur:
+        print 'change'
+        newCurrencyConfig = getCurrencyConfig(inpCur)
+        print('New currency config', newCurrencyConfig)
+        repo.setDb(newCurrencyConfig)    
+    else:
+        print 'same'    
+
+    res = service.getRatesBetweenDates(d1, d2, inpCur)
     preparePayLoad(res)
-    print("returning dates bettween", startDate, "and", endDate)
+    print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
     return jsonify(res)
 
 if __name__ == "__main__" :

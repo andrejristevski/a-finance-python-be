@@ -9,11 +9,15 @@ class Repo(object):
     type = 'MongoDb'
   
 
-    def __init__(self , dbConfig, host =config.getConfigParameter('host') , port=config.getConfigParameter('port') ):
+
+    def __init__(self, dbConfig, host =config.getConfigParameter('host') , port=config.getConfigParameter('port') ):
         self.client = pymongo.MongoClient(host, port)
+        self.setDb(dbConfig)
+        
+    def setDb(self, dbConfig):
         self.db = self.client[dbConfig['dbName']]
         self.dbConfig = dbConfig
-    
+
     def getLatestDownloadedDate(self):
         date = self.db[self.dbConfig['metadataCollection']].find_one()
         if date is not None:
