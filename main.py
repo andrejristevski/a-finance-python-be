@@ -34,18 +34,21 @@ def preparePayLoad(l):
             pass
 
 
+@app.route('/test')
+def alive () :
+    return "Server is up"
+
 @app.route('/a')
 def index () :
-
     startDate = request.args.get('startDate')
     endDate = request.args.get('endDate')
     inpCur=request.args.get('inp')
     outCur=request.args.get('out')
 
-
     d1= datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
     d2= datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
 
+    # this should go to functions so it is used in other charts
     if currencyConfig['currency'] != inpCur:
         print 'change'
         newCurrencyConfig = getCurrencyConfig(inpCur)
@@ -58,6 +61,14 @@ def index () :
     preparePayLoad(res)
     print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
     return jsonify(res)
+
+
+# no used
+@app.route('/strength', methods=['POST'])
+def strength () :
+    baseCur = request.json['base']
+    return 'Success'
+
 
 if __name__ == "__main__" :
     app.run(debug = True)  
