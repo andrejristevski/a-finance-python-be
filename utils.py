@@ -2,7 +2,7 @@ def removeUnicodeFromDict(obj):
     res = {}   
     for key,value  in obj.items():
         newKey= key.encode('ascii')
-        res[newKey] = value
+        res[key] = value
     
     return res    
 

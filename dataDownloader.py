@@ -87,6 +87,7 @@ class CurrencyDownloader:
                 print day
                 time.sleep(.3)
             saveValues(daysRates)
+            print 'updateting metadata'
             updateMetaData(latestDownloadedDateInfo['_id'] , daysRates[-1]['exactDate'])
 
         try:

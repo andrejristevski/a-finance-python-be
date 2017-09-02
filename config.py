@@ -49,4 +49,4 @@ def getConfigParameter(key):
     if key in config:
         return config[key]
     else:
-        print "Nonexisting key"    
+        print("Nonexisting key")    

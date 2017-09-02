@@ -27,9 +27,9 @@ def getCurrencyConfig(code):
 
 
 def preparePayLoad(l):
-    for el in l:
+    for element in l:
         try:
-            el.pop('_id')
+            element.pop('_id')
         except KeyError:
             pass
 
@@ -38,7 +38,7 @@ def preparePayLoad(l):
 def alive () :
     return "Server is up"
 
-@app.route('/a')
+@app.route('/rates')
 def index () :
     startDate = request.args.get('startDate')
     endDate = request.args.get('endDate')
@@ -50,17 +50,27 @@ def index () :
 
     # this should go to functions so it is used in other charts
     if currencyConfig['currency'] != inpCur:
-        print 'change'
+        print('change')
         newCurrencyConfig = getCurrencyConfig(inpCur)
-        print('New currency config', newCurrencyConfig)
+        # print('New currency config', newCurrencyConfig)
         repo.setDb(newCurrencyConfig)    
     else:
-        print 'same'    
+        print('same')    
 
     res = service.getRatesBetweenDates(d1, d2, inpCur)
     preparePayLoad(res)
     print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
+    # print(res)
+    # return jsonify(res)
+    # response = app.response_class(
+    #     response=json.dumps(res),
+    #     status=200,
+    #     mimetype='application/json'
+    # )
+    # return response
+    # return res
     return jsonify(res)
+    # return respoBdy
 
 
 # no used
