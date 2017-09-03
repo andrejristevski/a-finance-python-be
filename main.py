@@ -38,12 +38,13 @@ def preparePayLoad(l):
 def alive () :
     return "Server is up"
 
-@app.route('/rates')
+@app.route('/rates', methods=['POST'])
 def index () :
-    startDate = request.args.get('startDate')
-    endDate = request.args.get('endDate')
-    inpCur=request.args.get('inp')
-    outCur=request.args.get('out')
+
+    startDate = request.json['startDate']
+    endDate = request.json['endDate']
+    inpCur = request.json['inp']
+    outCur = request.json['out']
 
     d1= datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
     d2= datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
@@ -60,23 +61,18 @@ def index () :
     res = service.getRatesBetweenDates(d1, d2, inpCur)
     preparePayLoad(res)
     print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
-    # print(res)
-    # return jsonify(res)
-    # response = app.response_class(
-    #     response=json.dumps(res),
-    #     status=200,
-    #     mimetype='application/json'
-    # )
-    # return response
-    # return res
-    return jsonify(res)
-    # return respoBdy
+    bdy = {
+        'res': res,
+        'med': 3 
+    }
+    return jsonify(bdy)
 
 
 # no used
 @app.route('/strength', methods=['POST'])
 def strength () :
     baseCur = request.json['base']
+    print(baseCur)
     return 'Success'
 
 
