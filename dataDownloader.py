@@ -11,8 +11,6 @@ from pymongo import MongoClient
 
 class CurrencyDownloader:
 
-        
-
     def downloadMissingDataForCurrency(self, currencyConfig):    
 
         repo = mongoRepo.Repo(currencyConfig)
@@ -93,7 +91,7 @@ class CurrencyDownloader:
         try:
             downloadMissingData()
         except:
-            errors.append('Error downloading daata')
+            errors.append('Error downloading data')
 
 
         if len(errors) > 0 :

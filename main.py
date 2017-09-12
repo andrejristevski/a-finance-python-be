@@ -7,14 +7,12 @@ import mongoRepo
 from datetime import date, timedelta
 from flask_cors import CORS, cross_origin
 import config
+import calcUtils
 
 # EUR
 currencies = config.getConfigParameter('currencies')
-
 currencyConfig=currencies[0]
-
 repo = mongoRepo.Repo(currencyConfig)
-
 service = dbService.DbService(repo)
 
 app = Flask(__name__)
@@ -26,7 +24,7 @@ def getCurrencyConfig(code):
     return currency[0]
 
 
-def preparePayLoad(l):
+def deleteId(l):
     for element in l:
         try:
             element.pop('_id')
@@ -59,12 +57,18 @@ def index () :
         print('same')    
 
     res = service.getRatesBetweenDates(d1, d2, inpCur)
-    preparePayLoad(res)
-    print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
+    deleteId(res)
+
+    print(res[0]['rates'][outCur[0]])
+
+    mean = calcUtils.CalcUtils.findMeanForCurrency(res, outCur[0])
+
+
     bdy = {
         'res': res,
-        'med': 3 
+        'med': mean 
     }
+    print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
     return jsonify(bdy)
 
 

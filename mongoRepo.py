@@ -7,8 +7,6 @@ import utils
 class Repo(object):
 
     type = 'MongoDb'
-  
-
 
     def __init__(self, dbConfig, host =config.getConfigParameter('host') , port=config.getConfigParameter('port') ):
         self.client = pymongo.MongoClient(host, port)
