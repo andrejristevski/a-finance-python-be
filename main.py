@@ -4,10 +4,10 @@ from flask import Flask , jsonify , request
 import requests , json ,datetime ,time
 import dbService
 import mongoRepo
-from datetime import date, timedelta
-from flask_cors import CORS, cross_origin
 import config
 import calcUtils
+from datetime import date, timedelta
+from flask_cors import CORS, cross_origin
 
 # EUR
 currencies = config.getConfigParameter('currencies')
@@ -44,14 +44,13 @@ def index () :
     inpCur = request.json['inp']
     outCur = request.json['out']
 
-    d1= datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
-    d2= datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
+    d1 = datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
+    d2 = datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
 
     # this should go to functions so it is used in other charts
     if currencyConfig['currency'] != inpCur:
         print('change')
         newCurrencyConfig = getCurrencyConfig(inpCur)
-        # print('New currency config', newCurrencyConfig)
         repo.setDb(newCurrencyConfig)    
     else:
         print('same')    
