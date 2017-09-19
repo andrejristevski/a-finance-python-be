@@ -73,12 +73,13 @@ def buildDataSetForCurPair(inpCur, c, rates):
     }    
 
 def buildDataSetForCurStrength(inpCur, c, rates):
-    curBase = rates[0]['rates'][c]
-    curRates = getSingleValuedRatesForCur(rates, c)
-    res = []
-    for rate in curRates:
-        # res.append(curBase-rate)
-        res.append(abs(curBase-rate)/curBase*100)
+    if c is not inpCur:
+        curBase = rates[0]['rates'][c]
+        curRates = getSingleValuedRatesForCur(rates, c)
+        res = []
+        for rate in curRates:
+            # res.append(curBase-rate)
+            res.append((curBase-rate)/curBase*100)
     return {
         'rates': res,
         'inpCur': inpCur,
@@ -91,7 +92,10 @@ def buildDataSetForCurStrength(inpCur, c, rates):
 def getSingleValuedRatesForCur(rates, c):
     values = []
     for item in rates:
-        values.append(item['rates'][c])
+        try:
+            values.append(item['rates'][c])
+        except:
+            pass    
     return values    
 
 
