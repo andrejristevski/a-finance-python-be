@@ -8,7 +8,7 @@ class Repo(object):
 
     type = 'MongoDb'
 
-    def __init__(self, dbConfig, host =config.getConfigParameter('host') , port=config.getConfigParameter('port') ):
+    def __init__(self, dbConfig, host = config.getConfigParameter('host') , port = config.getConfigParameter('port') ):
         self.client = pymongo.MongoClient(host, port)
         self.setDb(dbConfig)
         
@@ -40,4 +40,6 @@ class Repo(object):
         self.db[self.dbConfig['metadataCollection']].insert(data)   
 
     def updateMetaData(self, id, data):
-        self.db[self.dbConfig['metadataCollection']].update({'_id':id},{'latestDownloadedDate': data})     
+        self.db[self.dbConfig['metadataCollection']].update({'_id':id},{'latestDownloadedDate': data})
+
+               

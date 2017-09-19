@@ -2,7 +2,7 @@
 class DbService(object):
 
     def __init__(self , repo):
-        self.repo=repo
+        self.repo = repo
 
     def getLatestDownloadedDate(self):
         return self.repo.getLatestDownloadedDate()
@@ -21,3 +21,5 @@ class DbService(object):
 
     def updateMetaData(self ,id , data):
         self.repo.updateMetaData(id, data)    
+    
+    

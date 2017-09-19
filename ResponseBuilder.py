@@ -20,10 +20,10 @@ def getCurrencyPairData(startDate, endDate, inpCur, outCur):
     rates = service.getRatesBetweenDates(startDate, endDate, inpCur)
     deleteId(rates)
 
-    # mean = calcUtils.CalcUtils.findMeanForCurrency(res, outCur[0])
+    mean = calcUtils.CalcUtils.findMeanForCurrency(rates, outCur[0])
     datasets = []
     for c in outCur:
-        dataset = buildDataSetForCur(inpCur, c, rates)
+        dataset = buildDataSetForCurPair(inpCur, c, rates)
         datasets.append(dataset)
 
     labels = getLabels(rates)    
@@ -31,15 +31,25 @@ def getCurrencyPairData(startDate, endDate, inpCur, outCur):
     print("returning dates bettween", startDate, "and", endDate, "for", inpCur)
     return {
         'datasets': datasets,
-        'labels': labels}
+        'labels': labels
+        }
+
+
 
 def getCurrencyStrenght(startDate, endDate, inpCur, outCur):
     rates = service.getRatesBetweenDates(startDate, endDate, inpCur)
     deleteId(rates)
 
+    datasets = []
+    for c in outCur:
+        dataset = buildDataSetForCurStrength(inpCur, c, rates)
+        datasets.append(dataset)
 
-
-    return rates
+    labels = getLabels(rates)
+    return {
+        'datasets': datasets,
+        'labels': labels
+        }
 
 """
 
@@ -54,33 +64,35 @@ def getLabels(rates):
     return res    
 
 
-def buildDataSetForCur(inpCur, c, rates):
-    mean = calcUtils.CalcUtils.findMeanForCurrency(rates, c)
-    values = []
-    for item in rates:
-        values.append(item['rates'][c])
+def buildDataSetForCurPair(inpCur, c, rates):
+    values = getSingleValuedRatesForCur(rates, c)
     return {
-        'mean': mean,
         'rates': values,
         'inpCur': inpCur,
         'outputCur': c 
     }    
 
+def buildDataSetForCurStrength(inpCur, c, rates):
+    curBase = rates[0]['rates'][c]
+    curRates = getSingleValuedRatesForCur(rates, c)
+    res = []
+    for rate in curRates:
+        # res.append(curBase-rate)
+        res.append(abs(curBase-rate)/curBase*100)
+    return {
+        'rates': res,
+        'inpCur': inpCur,
+        'outputCur': c 
+    }      
 
 
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
+def getSingleValuedRatesForCur(rates, c):
+    values = []
+    for item in rates:
+        values.append(item['rates'][c])
+    return values    
 
 
 def getCurrencyConfig(code):
