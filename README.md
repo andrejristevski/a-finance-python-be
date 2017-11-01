@@ -1,7 +1,7 @@
 
 
 
-You need mongo, python installed ,Flask, pandas, numpy
+You need mongo, python  ,Flask, pandas, numpy installed
 
 In order for the server to work you need to download the data first. You do this by the command 
 ```
