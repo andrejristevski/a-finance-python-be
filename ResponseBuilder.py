@@ -51,17 +51,64 @@ def getCurrencyStrenght(startDate, endDate, inpCur, outCur):
         'labels': labels
         }
 
+
+def getPercentageSum(startDate, endDate, inpCur, outCur):
+    
+    datasets = []
+    for c in outCur:
+        setCorrectCurrency(c)
+        rates = service.getRatesBetweenDates(startDate, endDate, c)
+        deleteId(rates)
+        # edna valuta sproti site 
+        dataset = buildDataSetForPercentageSum(c, rates, outCur)
+        datasets.append(dataset)
+
+
+    rates = service.getRatesBetweenDates(startDate, endDate, inpCur)
+    labels = getLabels(rates)
+    return {
+        'datasets': datasets,
+        'labels': labels
+        }
+
+
+
 """
 
 END of entry points for calculations
 
 """
 
-def getLabels(rates):
+
+def buildDataSetForPercentageSum(c, rates, outCur):
     res = []
-    for item in rates:
-        res.append(item['exactDateStr'])
-    return res    
+    curenciesPercentigase = []
+    for testAgainst in outCur:
+        
+        if c is not testAgainst:
+            curBaseRate = rates[0]['rates'][testAgainst]
+            curRates = getSingleValuedRatesForCur(rates, testAgainst)
+
+            # procenti za evro sprema dolar
+            currencyPerValues = []
+            for rate in curRates:
+                percentageChanged = abs(curBaseRate-rate)/curBaseRate*100
+                sign = -1 if rate < curBaseRate else 1
+                currencyPerValues.append(sign*percentageChanged)
+            curenciesPercentigase.append(currencyPerValues)    
+    
+    for i in range(len(curenciesPercentigase[0])):
+        percentageSum = 0;
+        for x in range(len(curenciesPercentigase)):
+            percentageSum += curenciesPercentigase[x][i]
+
+        res.append(percentageSum)
+
+    return {
+        'rates': res,
+        'inpCur': c,
+        'outputCur': 'all' 
+    }         
 
 
 def buildDataSetForCurPair(inpCur, c, rates):
@@ -74,19 +121,18 @@ def buildDataSetForCurPair(inpCur, c, rates):
 
 def buildDataSetForCurStrength(inpCur, c, rates):
     if c is not inpCur:
-        curBase = rates[0]['rates'][c]
+        curBaseRate = rates[0]['rates'][c]
         curRates = getSingleValuedRatesForCur(rates, c)
         res = []
         for rate in curRates:
-            # res.append(curBase-rate)
-            res.append((curBase-rate)/curBase*100)
+            percentageChanged = abs(curBaseRate-rate)/curBaseRate*100
+            sign = -1 if rate < curBaseRate else 1
+            res.append(sign*percentageChanged)
     return {
         'rates': res,
         'inpCur': inpCur,
         'outputCur': c 
     }      
-
-
     
 
 def getSingleValuedRatesForCur(rates, c):
@@ -111,10 +157,19 @@ def deleteId(l):
         except KeyError:
             pass
 
-def setCorrectCurrency(cur):   
+def setCorrectCurrency(cur):
+    print('setting cur to '+cur) 
+    global currencyConfig 
     if currencyConfig['currency'] != cur:
-        print('change')
         newCurrencyConfig = getCurrencyConfig(cur)
-        repo.setDb(newCurrencyConfig)    
+        repo.setDb(newCurrencyConfig)
+        currencyConfig = newCurrencyConfig
     else:
-        print('same')           
+        print('same')  
+
+
+def getLabels(rates):
+    res = []
+    for item in rates:
+        res.append(item['exactDateStr'])
+    return res          

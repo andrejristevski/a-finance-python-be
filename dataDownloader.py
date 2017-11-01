@@ -81,6 +81,12 @@ class CurrencyDownloader:
                 dayData = downloadDateData(day)
                 dayData['exactDate']=datetime.datetime(int(day[:4]), int(day[5:7]), int(day[8:]))
                 dayData['exactDateStr']=day
+                
+                if dayData['base'] == 'EUR':
+                    dayData['rates']['MKD']= 61.5
+                else:
+                    dayData['rates']['MKD'] = dayData['rates']['EUR'] * 61.5    
+                
                 daysRates.append(dayData)
                 print day
                 time.sleep(.3)

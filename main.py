@@ -7,7 +7,6 @@ import ResponseBuilder
 app = Flask(__name__)
 CORS(app)
 
-
 @app.route('/test')
 def alive () :
     return "Server is up"
@@ -42,6 +41,23 @@ def strength () :
     d2 = datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
 
     response = ResponseBuilder.getCurrencyStrenght(d1, d2, inpCur, outCur)
+    return jsonify(response)
+
+
+@app.route('/percentagesum', methods=['POST'])
+def percentagesum () :
+
+    startDate = request.json['startDate']
+    endDate = request.json['endDate']
+    inpCur = request.json['inpCur']
+    outCur = request.json['outCur']
+
+    d1 = datetime.datetime(int(startDate[:4]), int(startDate[5:7]), int(startDate[8:]))
+    d2 = datetime.datetime(int(endDate[:4]), int(endDate[5:7]), int(endDate[8:]))
+
+    print('d1 %s d2 %s  inpCur  %s outCur %s', d1, d2, inpCur, outCur )
+    response = ResponseBuilder.getPercentageSum(d1, d2, inpCur, outCur)
+
     return jsonify(response)
 
 
