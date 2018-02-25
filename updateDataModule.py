@@ -8,7 +8,7 @@ def startUpdateDataThread():
         while True:
             print("Updateting data")
             dataDownloader.updateCurrencyData()
-            time.sleep(1000000)
+            time.sleep(24*60*60)
 
     p = Process(target=doWork)
     p.start()
