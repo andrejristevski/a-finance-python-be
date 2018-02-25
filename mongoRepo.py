@@ -9,7 +9,8 @@ class Repo(object):
     type = 'MongoDb'
 
     def __init__(self, dbConfig, host = config.getConfigParameter('host') , port = config.getConfigParameter('port') ):
-        self.client = pymongo.MongoClient(host, port)
+        # self.client = pymongo.MongoClient(host, port)
+        self.client = pymongo.MongoClient(config.getConfigParameter('connectionString'))
         self.setDb(dbConfig)
         
     def setDb(self, dbConfig):

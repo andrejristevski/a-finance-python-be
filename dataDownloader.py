@@ -32,7 +32,7 @@ class CurrencyDownloader:
                  return False 
 
         if isTodayLatestDownloaded(latestDownloadedDate):
-            print "Already all downloaded"
+            print("Already all downloaded")
             return
         
 
@@ -54,8 +54,7 @@ class CurrencyDownloader:
             if currencyConfig['currency'] == 'EUR':
                 url = baseUrl+'/'+day
             else:
-                url = baseUrl+'/'+day+'?base='+ currencyConfig['currency']
-
+                url = baseUrl+day+'?base='+ currencyConfig['currency']
             obj = 'a'
             try:
                 a = requests.get(url)
@@ -82,16 +81,20 @@ class CurrencyDownloader:
                 dayData['exactDate']=datetime.datetime(int(day[:4]), int(day[5:7]), int(day[8:]))
                 dayData['exactDateStr']=day
                 
-                if dayData['base'] == 'EUR':
-                    dayData['rates']['MKD']= 61.5
-                else:
-                    dayData['rates']['MKD'] = dayData['rates']['EUR'] * 61.5    
+                if 'base' in dayData.keys():
+                    if dayData['base'] == 'EUR':
+                        dayData['rates']['MKD']= 61.5
+                    else:
+                        dayData['rates']['MKD'] = dayData['rates']['EUR'] * 61.5    
                 
-                daysRates.append(dayData)
-                print day
-                time.sleep(.3)
+                    daysRates.append(dayData)
+                    print(day)
+                    time.sleep(.3)
+                else:
+                    print('Error for '+ day)    
+            
             saveValues(daysRates)
-            print 'updateting metadata'
+            print('updateting metadata')
             updateMetaData(latestDownloadedDateInfo['_id'] , daysRates[-1]['exactDate'])
 
         try:
@@ -101,15 +104,19 @@ class CurrencyDownloader:
 
 
         if len(errors) > 0 :
-            print 'imase greski'
+            print('imase greski')
         else :
-            print 'SUCCESS downloading dates'    
+            print('SUCCESS downloading dates')    
 
 
 
-# go through all suported currencies and download 
-downloader= CurrencyDownloader()
 
-for currencyConfig in config.getConfigParameter('currencies'):
-    print 'Downloading for '+ currencyConfig['currency']
-    downloader.downloadMissingDataForCurrency(currencyConfig)
+def updateCurrencyData():
+    
+    print('updateting data')
+    # go through all suported currencies and download 
+    downloader = CurrencyDownloader()
+
+    for currencyConfig in config.getConfigParameter('currencies'):
+        print('Downloading for '+ currencyConfig['currency'])
+        downloader.downloadMissingDataForCurrency(currencyConfig)

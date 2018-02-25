@@ -4,6 +4,9 @@ import requests , json ,datetime ,time
 from flask_cors import CORS, cross_origin
 import ResponseBuilder
 
+import updateDataModule
+updateDataModule.startUpdateDataThread()
+
 app = Flask(__name__)
 CORS(app)
 

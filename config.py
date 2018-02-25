@@ -1,45 +1,48 @@
+import enviroment
+
 config = {
     'port' : 27017,
     'host' : 'localhost',
     'metadataCollection' : 'metaData',
-    'dbName' : 'pytdb',
-    'restApiRatesUrl' : 'http://api.fixer.io/',
+    'dbName' : 'rates',
+    'restApiRatesUrl' : 'https://api.fixer.io/',
     'ratesCollection' : "rates",
+    'connectionString': enviroment.getConnectionString(),
     'currencies': 
         [{
             'metadataCollection' : 'metaData',
             'ratesCollection' : "rates",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'EUR'
         },
         {
             'metadataCollection' : 'metaDataUSD',
             'ratesCollection' : "ratesUSD",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'USD',        
          },
          {
             'metadataCollection' : 'metaDataAUD',
             'ratesCollection' : "ratesAUD",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'AUD',        
          },
           {
             'metadataCollection' : 'metaDataCAD',
             'ratesCollection' : "ratesCAD",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'CAD',        
          },
           {
             'metadataCollection' : 'metaDataJPY',
             'ratesCollection' : "ratesJPY",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'JPY',        
          },
           {
             'metadataCollection' : 'metaDataCNY',
             'ratesCollection' : "ratesCNY",
-            'dbName' : 'pytdb',
+            'dbName' : 'rates',
             'currency': 'CNY',        
          },
          ]
