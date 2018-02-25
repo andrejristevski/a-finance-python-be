@@ -15,8 +15,9 @@
 .nfs*
 
 /penv
+/p36
 *.pyc
-
+enviroment.py
 
 ### VisualStudioCode ###
 .vscode/*
