@@ -16,7 +16,7 @@
 
 /penv
 *.pyc
-enviroment.py
+
 
 ### VisualStudioCode ###
 .vscode/*
