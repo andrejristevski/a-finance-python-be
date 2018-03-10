@@ -111,12 +111,12 @@ class CurrencyDownloader:
 
 
 
-def updateCurrencyData():
+# def updateCurrencyData():
     
-    print('updateting data')
-    # go through all suported currencies and download 
-    downloader = CurrencyDownloader()
+print('updateting data')
+# go through all suported currencies and download 
+downloader = CurrencyDownloader()
 
-    for currencyConfig in config.getConfigParameter('currencies'):
-        print('Downloading for '+ currencyConfig['currency'])
-        downloader.downloadMissingDataForCurrency(currencyConfig)
+for currencyConfig in config.getConfigParameter('currencies'):
+    print('Downloading for '+ currencyConfig['currency'])
+    downloader.downloadMissingDataForCurrency(currencyConfig)
