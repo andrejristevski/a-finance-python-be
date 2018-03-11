@@ -16,3 +16,5 @@ After that the the file for processing and calculating charts is ResponseBuilder
 
 You can look at deb.py for simple usage.
 
+If you want to run the server run main.py
+
